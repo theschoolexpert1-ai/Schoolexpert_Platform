@@ -34,11 +34,7 @@ export default function Hero() {
           <img
             src="/images/hero-students.png"
             alt="Students smiling and looking ahead"
-            className="hero-students-art relative z-10 h-full max-h-[550px] w-full object-contain object-center mix-blend-multiply"
-            style={{
-              WebkitMaskImage: 'radial-gradient(ellipse 82% 82% at 53% 52%, #000 61%, rgba(0,0,0,.94) 73%, transparent 100%)',
-              maskImage: 'radial-gradient(ellipse 82% 82% at 53% 52%, #000 61%, rgba(0,0,0,.94) 73%, transparent 100%)',
-            }}
+            className="hero-students-art relative z-10 h-full max-h-[550px] w-full object-contain object-center"
           />
           <div className="absolute right-[1%] top-[7%] z-20 hidden max-w-[275px] rounded-2xl border border-white/90 bg-white/90 px-4 py-3 shadow-[0_12px_34px_-18px_rgba(20,91,150,.42)] backdrop-blur-md sm:block">
             <div className="flex items-center gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#e8f4ff]"><GraduationCap className="size-6 text-[#087bd5]" /></span><div><p className="text-sm font-bold leading-tight text-[#102b50]">Multiple School Options</p><p className="mt-1 text-xs leading-snug text-[#526782]">Mainstream, Alternative, Inclusive and more</p></div></div>

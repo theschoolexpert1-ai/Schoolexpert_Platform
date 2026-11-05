@@ -142,3 +142,33 @@
 .faq-answer a { color: #2875c8; font-weight: 600; text-decoration: none; overflow-wrap: anywhere; }
 .faq-answer a:hover { color: #125cae; text-decoration: underline; }
 .faq-answer strong { color: #18345c; font-weight: 650; }
+
+
+/* Hero artwork integration: soften only the outer image perimeter.
+   The source photograph remains unchanged, fully opaque through its centre,
+   and rendered with object-fit: contain to preserve its native aspect ratio. */
+.hero-students-art {
+  display: block;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0%, #000 2.2%, #000 97.8%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 2.8%, #000 97.2%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent 0%, #000 2.2%, #000 97.8%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 2.8%, #000 97.2%, transparent 100%);
+  mask-composite: intersect;
+}
+
+@media (max-width: 640px) {
+  .hero-students-art {
+    -webkit-mask-image:
+      linear-gradient(to right, transparent 0%, #000 1.2%, #000 98.8%, transparent 100%),
+      linear-gradient(to bottom, transparent 0%, #000 2%, #000 98%, transparent 100%);
+    mask-image:
+      linear-gradient(to right, transparent 0%, #000 1.2%, #000 98.8%, transparent 100%),
+      linear-gradient(to bottom, transparent 0%, #000 2%, #000 98%, transparent 100%);
+  }
+}
