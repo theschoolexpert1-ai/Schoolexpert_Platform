@@ -22,7 +22,7 @@ const links = [
 ];
 
 const moreItems = [
-  { label: 'Ask the school expert', icon: MessageCircleQuestion },
+  { label: 'Ask The school expert', icon: MessageCircleQuestion },
   { label: 'Parents community', icon: UsersRound },
   { label: 'Parents corner', icon: Bookmark },
   { label: 'Homeschoolers hub', icon: House },
