@@ -1,0 +1,144 @@
+@import 'tailwindcss';
+
+/* ───────────── The School Expert™ design tokens ─────────────
+   Official palette — every colour in the UI comes from here. */
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --color-primary: #0874b9;
+  --color-primary-dark: #075d98;
+  --color-secondary: #1673c9;
+  --color-light-blue: #eef9ff;
+  --color-ink: #071f49;
+  --color-ink-soft: #52627c;
+  --color-section: #eff8fc;
+  --color-line: #b7c6cd;
+  --color-line-soft: #dbe4e8;
+  --color-highlight: #b32246;
+  --color-link: #1673c9;
+
+  /* Deep blues for hero, CTA and footer gradients */
+  --color-navy-950: #061f42;
+  --color-navy-900: #092b57;
+  --color-navy-800: #0b3769;
+  --color-navy-700: #0b4f86;
+  --color-sky-accent: #8fd3ff;
+
+  /* Role-card themes in the selection modal */
+  --color-role-school: #eef9ff;
+  --color-role-parent: #fff4ec;
+  --color-role-teacher: #edf8f1;
+  --color-role-vendor: #f4f0fc;
+
+  --radius-card: 1.25rem;
+
+  --shadow-card: 0 1px 2px rgb(19 27 31 / 0.04), 0 8px 24px -12px rgb(19 27 31 / 0.12);
+  --shadow-card-hover: 0 2px 4px rgb(19 27 31 / 0.05), 0 18px 40px -16px rgb(42 103 148 / 0.28);
+  --shadow-modal: 0 24px 64px -16px rgb(6 31 66 / 0.35);
+
+  --breakpoint-xs: 26rem;
+}
+
+@layer base {
+  html {
+    font-size: 15px;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  /* Sticky navbar offset for in-page anchors */
+  [id] {
+    scroll-margin-top: 5.5rem;
+  }
+  body {
+    @apply bg-white font-sans text-ink antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply tracking-tight text-ink;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  ::selection {
+    background: rgb(22 115 201 / 0.18);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-link);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-primary;
+  }
+  .section-title {
+    @apply text-[1.75rem] font-bold leading-[1.2] sm:text-[2rem];
+  }
+  .section-lead {
+    @apply mt-3 text-[0.95rem] leading-[1.65] text-ink-soft sm:text-base;
+  }
+  .field-label {
+    @apply mb-1.5 block text-sm font-semibold text-ink;
+  }
+  .field-input {
+    @apply block w-full rounded-xl border border-line bg-white px-3.5 py-2.5 text-[15px] text-ink placeholder:text-ink-soft/60
+      transition-colors outline-none focus:border-link focus:ring-4 focus:ring-link/15
+      disabled:cursor-not-allowed disabled:bg-section;
+  }
+  .field-input[aria-invalid='true'] {
+    @apply border-highlight focus:border-highlight focus:ring-highlight/15;
+  }
+  .field-error {
+    @apply mt-1.5 text-sm font-medium text-highlight;
+  }
+  .prose-legal h2 {
+    @apply mt-10 mb-3 text-xl font-bold;
+  }
+  .prose-legal p,
+  .prose-legal li {
+    @apply leading-relaxed text-ink-soft;
+  }
+  .prose-legal p {
+    @apply mb-4;
+  }
+  .prose-legal ul {
+    @apply mb-4 list-disc space-y-1.5 pl-5;
+  }
+  .prose-legal a {
+    @apply font-semibold text-link hover:underline;
+  }
+}
+
+/* Professional, information-first typography */
+@layer base {
+  body { font-size: 15px; line-height: 1.55; }
+  button, a { -webkit-tap-highlight-color: transparent; }
+}
+
+
+/* FAQ answer content: consistent, readable formatting for source-provided answers. */
+.faq-answer p + p { margin-top: 0.75rem; }
+.faq-answer ul { margin: 0.75rem 0; padding-left: 1.25rem; list-style: disc; }
+.faq-answer li { padding-left: 0.2rem; margin: 0.35rem 0; }
+.faq-answer a { color: #2875c8; font-weight: 600; text-decoration: none; overflow-wrap: anywhere; }
+.faq-answer a:hover { color: #125cae; text-decoration: underline; }
+.faq-answer strong { color: #18345c; font-weight: 650; }
