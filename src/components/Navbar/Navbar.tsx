@@ -24,9 +24,9 @@ const links = [
 const moreItems = [
   { label: 'Ask The school expert', icon: MessageCircleQuestion },
   { label: 'Parents community', icon: UsersRound },
-  { label: 'Parents corner', icon: Bookmark },
+  { label: 'Marketplace', icon: Bookmark },
   { label: 'Homeschoolers hub', icon: House },
-  { label: 'Everhungry Bookworms', icon: BookOpen },
+  { label: 'The Everhungry Bookworms Reading Club', icon: BookOpen },
   { label: 'Newsworms', icon: Newspaper },
   { label: 'Worksheets & Downloads', icon: Download },
 ];
