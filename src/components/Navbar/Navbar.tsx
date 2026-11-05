@@ -23,7 +23,7 @@ const links = [
 
 const moreItems = [
   { label: 'Ask The School Expert', icon: MessageCircleQuestion },
-  { label: 'Parents community', icon: UsersRound },
+  { label: 'Parents Community', icon: UsersRound },
   { label: 'Marketplace', icon: Bookmark },
   { label: 'Homeschoolers hub', icon: House },
   { label: 'The Everhungry Bookworms Reading Club', icon: BookOpen },
