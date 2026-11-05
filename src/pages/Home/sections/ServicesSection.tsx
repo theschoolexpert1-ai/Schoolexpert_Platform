@@ -21,7 +21,7 @@ const services: Service[] = [
   {
     title: 'For Parents',
     icon: Users,
-    description: "Discover the right schools, access helpful resources and support your child's learning journey.",
+    description: "Discover the right schools, access helpful resources ,support your child's learning journey and more.",
     features: [
       'Discover schools',
       'Explore educational resources',
@@ -37,7 +37,7 @@ const services: Service[] = [
   {
     title: 'For Teachers',
     icon: GraduationCap,
-    description: 'Explore teaching opportunities, learning resources and professional growth.',
+    description: 'Connect with your community and explore teaching opportunities, learning resources, professional growth and more.',
     features: [
       'Teaching opportunities',
       'Professional resources',

@@ -16,7 +16,7 @@ export default function Hero() {
         <div className="relative z-10 max-w-[740px]">
           <div className="inline-flex items-center gap-2 rounded-full border border-[#c6e5ff] bg-[#e4f3ff] px-4 py-2 text-[13px] font-semibold text-[#075da9]"><ShieldCheck size={17} /> India’s Trusted Education Ecosystem</div>
           <motion.h1 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="mt-5 max-w-[760px] text-[clamp(2rem,3.35vw,3.05rem)] font-bold leading-[1.13] tracking-tight text-[#071f49]">Bringing India’s K-12 education community together.</motion.h1>
-          <p className="mt-4 max-w-[660px] text-[15px] leading-[1.65] text-[#294465] sm:text-base">Find verified schools, tutors, hobby classes and education services. Hire great teachers, explore trusted resources and connect with the right education partners across India — all in one place.</p>
+          <p className="mt-4 max-w-[660px] text-[15px] leading-[1.65] text-[#294465] sm:text-base"></p>
           <div className="mt-6 flex flex-wrap gap-3"><Button variant="primary" size="lg" onClick={openRoleModal}>Explore the Platform <ArrowRight size={19} /></Button><Button variant="outline" size="lg" onClick={go}>Discover Our Services</Button></div>
           <div className="mt-7 flex flex-wrap gap-x-5 gap-y-3 text-[13px] font-semibold text-[#17375e]">{[[ShieldCheck, 'Verified Information'], [Users, 'Diverse Education Options'], [BookOpen, 'Helpful Resources'], [Sprout, 'A Stronger Education Community']].map(([Icon, label]: any) => <span key={label} className="flex items-center gap-2"><Icon size={22} className="text-[#087bd5]" />{label}</span>)}</div>
         </div>

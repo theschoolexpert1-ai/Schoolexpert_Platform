@@ -5,7 +5,7 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 const audienceContent = {
   schools: {
     label: 'For Schools', title: 'A brighter way to connect your school with families.',
-    description: 'We’re preparing a dedicated space for schools to showcase their strengths, share programmes and connect with the right parent community.',
+    description: 'A dedicated space for schools to showcase strengths, share programmes and connect with teachers and parents community.',
     icon: School, accent: '#087bd5', pale: '#e8f5ff',
   },
   parents: {
@@ -20,7 +20,7 @@ const audienceContent = {
   },
   vendors: {
     label: 'For Vendors', title: 'Bring your education services to the right community.',
-    description: 'We’re preparing a dedicated space for education partners to introduce their services and build meaningful connections with schools.',
+    description: 'We’re preparing a dedicated space for education partners to introduce their services and build meaningful connections within the ecosystem.',
     icon: Handshake, accent: '#8054c8', pale: '#f2edff',
   },
 } as const;
@@ -45,7 +45,7 @@ export default function ComingSoon({ audience }: { audience: Audience }) {
           <p className="mt-4 max-w-xl text-[15px] leading-[1.7] text-[#405775] sm:text-base">{data.description}</p>
           <div className="mt-8 inline-flex items-center gap-3 rounded-2xl border border-white bg-white/80 px-5 py-4 shadow-[0_12px_36px_rgba(29,91,145,.10)]">
             <span className="grid size-11 place-items-center rounded-xl" style={{ backgroundColor: data.pale, color: data.accent }}><Bell size={22}/></span>
-            <span><span className="block text-sm font-extrabold text-[#102c55]">Coming Soon</span><span className="mt-0.5 block text-sm text-[#60738d]">We’re putting the finishing touches in place.</span></span>
+            <span><span className="block text-sm font-extrabold text-[#102c55]">Coming Soon</span><span className="mt-0.5 block text-sm text-[#60738d]"></span></span>
           </div>
           <div className="mt-8 max-w-xl border-l-[3px] pl-4 py-1" style={{ borderColor: data.accent }}>
             <p className="text-sm font-semibold tracking-wide text-[#244364]">A more connected education experience is taking shape.</p>
