@@ -48,7 +48,7 @@ No known dependency advisory was reported by the successful npm audit. No creden
 | B08 | Footer consumes validated social config; Contact consumes supportEmail; existing public defaults remain | site.ts, Footer, Contact | Tests render configured email/social overrides and reject executable social URLs |
 | B09 | Decode guarded; getElementById replaces selector parsing for fragments | navigation.ts | Tests include malformed encoding, encoded spaces, missing targets and selector-like fragments |
 | B10 | Active JSON remains authoritative; obsolete unimported TypeScript copy and unreachable conditional removed | PrivacyPolicy.tsx; deleted privacy-policy-data.ts | Active JSON is unchanged; rendered page includes final section 44 |
-| B11 | One route manifest supplies routing and the seven public canonical sitemap URLs | routes.json, routes.ts, App, SEO | Tests cover every alias and canonical URL; sitemap has seven entries and excludes audience placeholders/aliases |
+| B11 | One route manifest supplies routing and the eight public canonical sitemap URLs | routes.json, routes.ts, App, SEO | Tests cover every alias and canonical URL; sitemap has eight entries and excludes audience placeholders/aliases |
 | B12 | SEO reads the same public/robots.txt; stale sitemap is removed when URL is absent | public/robots.txt, SEO | Generated/source rules equality and stale sitemap removal tested |
 | B13 | New authoritative frontend README; updated image guide; parent README points to current instructions | README files | Commands checked against package.json and executed where stated |
 | B14 | All src files included in typecheck; obsolete roles and SmartImage modules removed; unused API declaration/props/data and Hero any removed | tsconfig, obsolete files, Hero, ServiceCard/ServicesSection, ComingSoon, Logo | Full src typecheck passes; source scan found no explicit any/raw HTML/preloading sink in TS/TSX |
@@ -154,7 +154,7 @@ Paths are relative to the frontend directory unless stated otherwise.
 | Automated logic/component regression | **PASS** | `npm.cmd test`: 7 groups passed, 0 failed; includes informational page and four audience component rendering |
 | Functional browser testing | **NOT RUN to completion** | Tool stopped before reliable page inspection; interactions remain unverified |
 | Responsive browser testing | **NOT RUN** | No supported browser session; no mobile/tablet/desktop screenshots taken |
-| HTTP delivery smoke checks | **PASS** | 22 direct URLs: 21 supported canonical/alias routes + unknown fallback; 5 compiled entry assets + 7 referenced images; expected asset MIME types |
+| HTTP delivery smoke checks | **PASS** | The pre-feature audit covered 22 direct URLs. The Founding Partner feature adds one canonical public route; its updated direct-route check is reported separately in the feature handoff |
 | Security checks | **PASS for executed checks** | Successful `npm.cmd audit --json`: 0 known vulnerabilities across reported 167 dependencies; malicious URL and escaped-content regression cases passed. Not a penetration test |
 | FAQ content preservation | **PASS** | Compared all 26 entries with pre-change Git content: IDs, questions, concatenated answer text and link targets match |
 | Image preservation | **PASS** | All six lossless WebP files have identical decoded RGBA pixels and dimensions to source PNGs; source images have no embedded color/orientation metadata |

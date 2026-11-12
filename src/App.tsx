@@ -9,6 +9,7 @@ import { resolveRoute } from './config/routes';
 import { scrollToHash } from './utils/navigation';
 
 const About = lazy(() => import('./pages/About/About'));
+const FoundingPartnerProgramme = lazy(() => import('./pages/FoundingPartnerProgramme/FoundingPartnerProgramme'));
 const Contact = lazy(() => import('./pages/Contact/Contact'));
 const FAQs = lazy(() => import('./pages/FAQs/FAQs'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy/PrivacyPolicy'));
@@ -32,6 +33,7 @@ export default function App() {
   let page: ReactNode;
   switch (route?.page) {
     case 'home': page = <Home />; break;
+    case 'founding-partner-programme': page = <FoundingPartnerProgramme />; break;
     case 'about': page = <About />; break;
     case 'contact': page = <Contact />; break;
     case 'faqs': page = <FAQs />; break;

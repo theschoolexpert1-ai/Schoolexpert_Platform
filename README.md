@@ -21,7 +21,7 @@ The build runs TypeScript, Vite, and SEO generation, producing `dist/`. Preview 
 
 ## Pages and behavior
 
-`src/config/routes.json` is the shared route inventory for the frontend and sitemap. It includes Home, About, Contact, FAQs, Privacy Policy, Terms & Conditions, Cookie Policy and the four audience pages, with their existing aliases. Unknown URLs render a noindex Page not found screen. Static hosting still needs the supplied SPA fallback; the client screen alone cannot set an HTTP 404 status.
+`src/config/routes.json` is the shared route inventory for the frontend and sitemap. It includes Home, the Founding Partner Programme, About, Contact, FAQs, Privacy Policy, Terms & Conditions, Cookie Policy and the four audience pages, with their existing aliases. Unknown URLs render a noindex Page not found screen. Static hosting still needs the supplied SPA fallback; the client screen alone cannot set an HTTP 404 status.
 
 - Explore the Platform opens a role dialog. Choosing a role navigates to a Coming Soon audience page. It does not create an account or persist a role.
 - Navbar More entries lead to the home Services section from any page. Desktop More supports hover, click, keyboard focus and Escape. Tablet/mobile widths use the collapsible menu.
@@ -68,7 +68,7 @@ node scripts/generate-seo-files.mjs staging
 
 Publish `dist/` to static hosting after `npm run build`. For Vercel, set the project root to this frontend directory; `vercel.json` serves index.html for route refreshes. Configure equivalent SPA fallback on other hosts. This repository does not provision hosting, database services, containers or CI/CD. No deployment is performed by the build.
 
-The sitemap contains the seven indexable canonical pages. Audience placeholders and aliases are excluded. `public/robots.txt` is the source for both development and generated crawler rules. Page-specific metadata is currently applied by React; crawler/social-preview verification and any future prerendering remain separate work.
+The sitemap contains the eight indexable canonical pages. Audience placeholders and aliases are excluded. `public/robots.txt` is the source for both development and generated crawler rules. Page-specific metadata is currently applied by React; crawler/social-preview verification and any future prerendering remain separate work.
 
 ## Checks and limitations
 

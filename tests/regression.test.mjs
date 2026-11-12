@@ -98,6 +98,7 @@ test('public configuration preserves defaults and wires validated overrides into
 test('informational pages and all four audience variants render without component errors', () => {
   const pages = [
     ['About', 'About', 'Founder'], ['Contact', 'Contact', 'Get in touch'],
+    ['FoundingPartnerProgramme', 'FoundingPartnerProgramme', 'Founding Partner Programme'],
     ['FAQs', 'FAQs', 'Search frequently asked questions'],
     ['PrivacyPolicy', 'PrivacyPolicy', 'privacy-section-44'],
     ['TermsConditions', 'TermsConditions', 'terms-section-10'],
@@ -133,7 +134,8 @@ test('SEO uses Vite env precedence, includes public pages, excludes aliases/plac
   generateSeo(root, dist);
   let xml = readFileSync(join(dist, 'sitemap.xml'), 'utf8');
   assert.ok(xml.includes('https://local.example/about'));
-  assert.equal((xml.match(/<url>/g) ?? []).length, 7);
+  assert.ok(xml.includes('https://local.example/founding-partner-programme'));
+  assert.equal((xml.match(/<url>/g) ?? []).length, 8);
   assert.ok(!xml.includes('/schools'));
   assert.ok(!xml.includes('/about-us'));
   writeFileSync(join(root, '.env.production.local'), 'VITE_SITE_URL=https://production.example\n');
@@ -148,4 +150,60 @@ test('SEO uses Vite env precedence, includes public pages, excludes aliases/plac
   generateSeo(root, dist);
   assert.equal(existsSync(join(dist, 'sitemap.xml')), false);
   assert.equal(readFileSync(join(dist, 'robots.txt'), 'utf8').trim(), readFileSync('public/robots.txt', 'utf8').trim());
+});
+
+test('Founding Partner Programme is promoted from the homepage while preserving official content and email actions', () => {
+  const { default: Navbar } = loadTs('src/components/Navbar/Navbar.tsx');
+  const navbar = renderToStaticMarkup(createElement(Navbar));
+  assert.equal(navbar.includes('Founding Partner Programme'), false);
+  assert.equal((navbar.match(/href="\/founding-partner-programme"/g) ?? []).length, 0);
+
+  const { default: FoundingPartnerSection } = loadTs('src/pages/Home/sections/FoundingPartnerSection.tsx');
+  const promotion = renderToStaticMarkup(createElement(FoundingPartnerSection));
+  assert.ok(promotion.includes('An Exclusive Opportunity'));
+  assert.ok(promotion.includes('Become a'));
+  assert.ok(promotion.includes('Lifetime Recognition'));
+  assert.ok(promotion.includes('Enhanced Visibility'));
+  assert.ok(promotion.includes('Priority Opportunities'));
+  assert.equal((promotion.match(/href="\/founding-partner-programme"/g) ?? []).length, 1);
+
+  const homeSource = readFileSync(join(process.cwd(), 'src/pages/Home/Home.tsx'), 'utf8');
+  assert.ok(homeSource.indexOf('<FoundingPartnerSection />') < homeSource.indexOf('<ServicesSection />'));
+
+  const { default: Page } = loadTs('src/pages/FoundingPartnerProgramme/FoundingPartnerProgramme.tsx');
+  const page = renderToStaticMarkup(createElement(Page));
+  const benefitTitles = [
+    'One-Time Registration Fee',
+    'Three-Year Waiver of Annual Renewal Fees',
+    'Lifetime Founding Partner Badge',
+    'Invitation to Participate in Committees and Councils',
+    'Priority Access to Events',
+    'Enhanced Visibility',
+    'Partner References and Introductions',
+    'Selected Marketing Opportunities',
+  ];
+  for (const title of benefitTitles) assert.ok(page.includes(title), title);
+  const requiredStatements = [
+    'Build a stronger presence within India&#x27;s education ecosystem.',
+    'The Founding Partner Programme is designed for eligible registered vendors, institutions, businesses and organisations',
+    'A one-time registration fee applies at the time of registration.',
+    'Founding Partners are exempt from annual renewal fees for the first three years',
+    'Recognition of their status as a Founding Partner of The School Expert™.',
+    'Opportunities to be invited to participate in The School Expert™ committees and councils',
+    'Priority access to events hosted by The School Expert™.',
+    'Increased visibility through relevant platform initiatives and promotional activities.',
+    'We take our references to our Founding Partners wherever we go',
+    'Potential inclusion in relevant events, communications, newsletters and other promotional initiatives, where applicable.',
+    'Specific benefits, eligibility and participation arrangements will be confirmed individually.',
+    'The School Expert™ may have multiple Founding Partners within the same category.',
+    'Please email your organisation’s profile, details of your services and a brief proposal',
+  ];
+  for (const statement of requiredStatements) assert.ok(page.includes(statement), statement);
+  assert.ok(page.includes('All benefits are subject to the agreed terms and conditions of our association.'));
+  assert.ok(page.includes('Founding Partner status does not automatically grant category exclusivity.'));
+  assert.ok(page.includes('Exclusivity is not automatic and will apply only if expressly agreed in writing'));
+  assert.ok(page.includes('Applications are subject to review, suitability and mutually agreed terms.'));
+  assert.equal((page.match(/mailto:shalini@schoolexpert.in\?subject=Founding%20Partner%20Application/g) ?? []).length, 2);
+  assert.equal((page.match(/mailto:shalini@schoolexpert.in\?subject=Exclusive%20Founding%20Partners%20Application/g) ?? []).length, 1);
+  assert.equal(page.includes('guaranteed'), false);
 });
