@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion';
 import { ArrowLeft, Building2, Globe, Mail, Phone, Sparkles } from 'lucide-react';
+import { site } from '@/config/site';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const contactRows = [
   { label: 'Website', value: 'www.schoolexpert.in', href: 'https://www.schoolexpert.in', icon: Globe },
-  { label: 'Email', value: 'info@schoolexpert.in', href: 'mailto:info@schoolexpert.in', icon: Mail },
+  { label: 'Email', value: site.supportEmail, href: `mailto:${site.supportEmail}`, icon: Mail },
   { label: 'Phone', value: '9972915700', href: 'tel:9972915700', icon: Phone },
 ];
 

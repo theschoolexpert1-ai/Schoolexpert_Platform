@@ -4,8 +4,8 @@ import { ArrowLeft, ChevronDown, CircleHelp, Search, Sparkles } from 'lucide-rea
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import faqGroups from './faq-data.json';
 
-type FAQItemData = { id: number; question: string; answer_html: string };
-type FAQGroupData = { title: string; description: string; items: FAQItemData[] };
+import FAQAnswer from './FAQAnswer';
+import { filterFAQGroups, type FAQItemData, type FAQGroupData } from './faq-content';
 const groups = faqGroups as FAQGroupData[];
 const faqGroupsOnly = groups.filter(group => group.title !== 'Important Note');
 const importantNote = groups.find(group => group.title === 'Important Note')?.items[0];
@@ -15,14 +15,14 @@ function FAQItem({ item, open, onToggle }: { item: FAQItemData; open: boolean; o
   const panelId = `faq-answer-${item.id}`;
   return (
     <div className={`overflow-hidden rounded-2xl border transition-colors duration-200 ${open ? 'border-[#b9d8f8] bg-white shadow-[0_10px_28px_rgba(35,91,145,.07)]' : 'border-[#e0ecf8] bg-white/75 hover:border-[#c8def5]'}`}>
-      <button type="button" aria-expanded={open} aria-controls={panelId} onClick={onToggle} className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left sm:px-6 sm:py-[18px] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-[#d7eaff]">
+      <button type="button" aria-expanded={open} aria-controls={open ? panelId : undefined} onClick={onToggle} className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left sm:px-6 sm:py-[18px] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-[#d7eaff]">
         <span className="flex min-w-0 items-start gap-3"><span className={`mt-0.5 grid size-7 shrink-0 place-items-center rounded-lg text-[12px] font-bold ${open ? 'bg-[#e8f3ff] text-[#2875c8]' : 'bg-[#f1f7fe] text-[#6485ae]'}`}>{item.id}</span><span className="text-[14px] font-semibold leading-6 text-[#18345c] sm:text-[15px]">{item.question}</span></span>
         <ChevronDown size={19} className={`shrink-0 text-[#3979cf] transition-transform duration-300 ${open ? 'rotate-180' : ''}`} />
       </button>
       <AnimatePresence initial={false}>
         {open && <motion.div id={panelId} initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.24, ease: 'easeInOut' }} className="overflow-hidden">
           <div className="border-t border-[#e8f0f9] px-5 pb-5 pt-4 sm:px-6 sm:pb-6 sm:pl-[4.25rem]">
-            <div className="faq-answer space-y-3 text-[14px] leading-[1.8] text-[#536985] sm:text-[15px]" dangerouslySetInnerHTML={{ __html: item.answer_html }} />
+            <div className="faq-answer space-y-3 text-[14px] leading-[1.8] text-[#536985] sm:text-[15px]" ><FAQAnswer nodes={item.answer} /></div>
           </div>
         </motion.div>}
       </AnimatePresence>
@@ -33,11 +33,7 @@ function FAQItem({ item, open, onToggle }: { item: FAQItemData; open: boolean; o
 export default function FAQs() {
   const [query, setQuery] = useState('');
   const [openId, setOpenId] = useState<number | null>(null);
-  const filteredGroups = useMemo(() => {
-    const term = query.trim().toLowerCase();
-    if (!term) return faqGroupsOnly;
-    return faqGroupsOnly.map(group => ({ ...group, items: group.items.filter(item => `${item.question} ${item.answer_html.replace(/<[^>]+>/g, ' ')}`.toLowerCase().includes(term)) })).filter(group => group.items.length > 0);
-  }, [query]);
+  const filteredGroups = useMemo(() => filterFAQGroups(faqGroupsOnly, query), [query]);
   const resultCount = filteredGroups.reduce((total, group) => total + group.items.length, 0);
 
   useDocumentMeta({ title: 'Frequently Asked Questions', description: 'Find answers about The School Expert™, registration, verification, WhatsApp groups, the Founding Partner Programme and collaboration.', canonicalPath: '/faqs' });
@@ -77,7 +73,7 @@ export default function FAQs() {
           {filteredGroups.length === 0 && <div className="rounded-2xl border border-dashed border-[#c8def5] bg-white/70 px-6 py-12 text-center"><Search size={25} className="mx-auto text-[#80a9d5]"/><h2 className="mt-3 text-base font-semibold text-[#18345c]">No matching questions</h2><p className="mt-1 text-sm text-[#71839c]">Try another keyword or clear your search.</p><button type="button" onClick={() => setQuery('')} className="mt-4 rounded-full border border-[#b9d8f8] bg-white px-4 py-2 text-sm font-semibold text-[#2875c8] transition hover:bg-[#f2f8ff]">Clear search</button></div>}
         </div>
 
-        {!query.trim() && importantNote && <motion.aside initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.2 }} className="faq-answer mt-9 rounded-[22px] border border-[#cfe3f8] bg-[linear-gradient(120deg,#f4faff_0%,#eaf5ff_100%)] p-5 text-[13px] leading-[1.8] text-[#536985] sm:p-6"><h2 className="mb-3 text-[16px] font-bold text-[#18345c]">Important Note</h2><div className="space-y-2" dangerouslySetInnerHTML={{ __html: importantNote.answer_html }} /></motion.aside>}
+        {!query.trim() && importantNote && <motion.aside initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.2 }} className="faq-answer mt-9 rounded-[22px] border border-[#cfe3f8] bg-[linear-gradient(120deg,#f4faff_0%,#eaf5ff_100%)] p-5 text-[13px] leading-[1.8] text-[#536985] sm:p-6"><h2 className="mb-3 text-[16px] font-bold text-[#18345c]">Important Note</h2><div className="space-y-2" ><FAQAnswer nodes={importantNote.answer} /></div></motion.aside>}
 
         <div className="mt-8 flex flex-col items-start justify-between gap-3 rounded-2xl border border-[#dceafa] bg-white/70 px-5 py-4 sm:flex-row sm:items-center"><p className="text-[13px] text-[#60738e]">Still have a question? Contact our team for assistance.</p><a href="/contact" className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#2875c8] transition hover:text-[#125cae] hover:underline">Contact Us <span aria-hidden="true">→</span></a></div>
       </div>

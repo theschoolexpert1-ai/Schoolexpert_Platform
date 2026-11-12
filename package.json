@@ -10,7 +10,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build && node scripts/generate-seo-files.mjs",
     "preview": "vite preview",
-    "typecheck": "tsc -b"
+    "typecheck": "tsc -b",
+    "test": "node --test tests/regression.test.mjs"
   },
   "dependencies": {
     "framer-motion": "^12.18.1",

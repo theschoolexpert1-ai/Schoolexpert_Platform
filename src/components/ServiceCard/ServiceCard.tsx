@@ -6,7 +6,6 @@ export interface Service {
   title: string;
   icon: LucideIcon;
   description: string;
-  features: string[];
   cta: string;
   to: string;
   tint: string;

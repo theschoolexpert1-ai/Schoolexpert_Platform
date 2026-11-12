@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowLeft, ShieldCheck, LockKeyhole, Mail, ExternalLink } from 'lucide-react';
+import { ArrowLeft, ShieldCheck, LockKeyhole } from 'lucide-react';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import sections from './privacy-policy.json';
 
@@ -41,7 +41,6 @@ export default function PrivacyPolicy() {
             {policySections.map((section, index) => <section id={`privacy-section-${index+1}`} key={section.title} className="scroll-mt-24 py-6 sm:py-7">
               <h3 className="text-[16px] font-bold leading-snug text-[#17365f] sm:text-[17px]">{section.title}</h3>
               <div className="mt-3 space-y-3">{section.paragraphs.map((paragraph, pIndex) => <p key={pIndex} className="text-[13px] leading-[1.8] text-[#536985] sm:text-[14px]">{paragraph}</p>)}</div>
-              {section.title.startsWith('45.') && <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-[13px] text-[#3b628a]"><a className="inline-flex items-center gap-1.5 font-semibold hover:text-[#087bd5]" href="https://www.schoolexpert.in" target="_blank" rel="noreferrer">www.schoolexpert.in <ExternalLink size={13}/></a><a className="inline-flex items-center gap-1.5 font-semibold hover:text-[#087bd5]" href="mailto:info@schoolexpert.in"><Mail size={14}/>info@schoolexpert.in</a></div>}
             </section>)}
           </div>
         </article>

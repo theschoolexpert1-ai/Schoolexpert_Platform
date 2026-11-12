@@ -1,0 +1,13 @@
+[
+  { "path": "/", "page": "home", "aliases": [], "index": true },
+  { "path": "/about", "page": "about", "aliases": ["/about-us"], "index": true },
+  { "path": "/contact", "page": "contact", "aliases": ["/contact-us"], "index": true },
+  { "path": "/faqs", "page": "faqs", "aliases": ["/faq"], "index": true },
+  { "path": "/privacy-policy", "page": "privacy", "aliases": ["/privacy"], "index": true },
+  { "path": "/terms-and-conditions", "page": "terms", "aliases": ["/terms"], "index": true },
+  { "path": "/cookie-policy", "page": "cookies", "aliases": ["/cookies"], "index": true },
+  { "path": "/schools", "page": "schools", "aliases": ["/for/schools"], "index": false },
+  { "path": "/parents", "page": "parents", "aliases": ["/for/parents"], "index": false },
+  { "path": "/teachers", "page": "teachers", "aliases": ["/for/teachers"], "index": false },
+  { "path": "/vendors", "page": "vendors", "aliases": ["/for/vendors"], "index": false }
+]

@@ -1,30 +1,54 @@
+import { lazy, Suspense, useEffect, type ReactNode } from 'react';
 import { MotionConfig } from 'framer-motion';
 import { RoleModalProvider } from './context/RoleModalContext';
 import Layout from './components/Layout/Layout';
+import PageErrorBoundary from './components/PageErrorBoundary';
 import Home from './pages/Home/Home';
-import ComingSoon from './pages/ComingSoon/ComingSoon';
-import About from './pages/About/About';
-import Contact from './pages/Contact/Contact';
-import FAQs from './pages/FAQs/FAQs';
-import PrivacyPolicy from './pages/PrivacyPolicy/PrivacyPolicy';
-import TermsConditions from './pages/TermsConditions/TermsConditions';
-import CookiePolicy from './pages/CookiePolicy/CookiePolicy';
+import NotFound from './pages/NotFound/NotFound';
+import { resolveRoute } from './config/routes';
+import { scrollToHash } from './utils/navigation';
 
-const audienceRoutes: Record<string, 'schools' | 'parents' | 'teachers' | 'vendors'> = {
-  '/schools': 'schools', '/for/schools': 'schools',
-  '/parents': 'parents', '/for/parents': 'parents',
-  '/teachers': 'teachers', '/for/teachers': 'teachers',
-  '/vendors': 'vendors', '/for/vendors': 'vendors',
-};
+const About = lazy(() => import('./pages/About/About'));
+const Contact = lazy(() => import('./pages/Contact/Contact'));
+const FAQs = lazy(() => import('./pages/FAQs/FAQs'));
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy/PrivacyPolicy'));
+const TermsConditions = lazy(() => import('./pages/TermsConditions/TermsConditions'));
+const CookiePolicy = lazy(() => import('./pages/CookiePolicy/CookiePolicy'));
+const ComingSoon = lazy(() => import('./pages/ComingSoon/ComingSoon'));
+
+// Commit after the lazy page is ready so direct section links can find their target.
+function PageContent({ children }: { children: ReactNode }) {
+  useEffect(() => {
+    const handleHash = () => { scrollToHash(window.location.hash); };
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
+  return children;
+}
 
 export default function App() {
-  const pathname = window.location.pathname.replace(/\/$/, '') || '/';
-  const audience = audienceRoutes[pathname];
+  const route = resolveRoute(window.location.pathname);
+  let page: ReactNode;
+  switch (route?.page) {
+    case 'home': page = <Home />; break;
+    case 'about': page = <About />; break;
+    case 'contact': page = <Contact />; break;
+    case 'faqs': page = <FAQs />; break;
+    case 'privacy': page = <PrivacyPolicy />; break;
+    case 'terms': page = <TermsConditions />; break;
+    case 'cookies': page = <CookiePolicy />; break;
+    case 'schools': case 'parents': case 'teachers': case 'vendors':
+      page = <ComingSoon audience={route.page} />; break;
+    default: page = <NotFound />;
+  }
   return (
     <MotionConfig reducedMotion="user">
       <RoleModalProvider>
         <Layout>
-          {pathname === '/cookie-policy' || pathname === '/cookies' ? <CookiePolicy /> : pathname === '/terms-and-conditions' || pathname === '/terms' ? <TermsConditions /> : pathname === '/privacy-policy' || pathname === '/privacy' ? <PrivacyPolicy /> : pathname === '/about' || pathname === '/about-us' ? <About /> : pathname === '/contact' || pathname === '/contact-us' ? <Contact /> : pathname === '/faqs' || pathname === '/faq' ? <FAQs /> : audience ? <ComingSoon audience={audience} /> : <Home />}
+          <PageErrorBoundary><Suspense fallback={<p role="status" className="container-page py-16 text-center">Loading page…</p>}>
+            <PageContent>{page}</PageContent>
+          </Suspense></PageErrorBoundary>
         </Layout>
       </RoleModalProvider>
     </MotionConfig>

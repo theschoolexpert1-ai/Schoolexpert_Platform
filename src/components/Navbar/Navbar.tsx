@@ -11,7 +11,8 @@ import {
   Newspaper,
   Download,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { goToHomeSection } from '@/utils/navigation';
 import { Logo } from '../Logo/Logo';
 
 const links = [
@@ -35,12 +36,29 @@ const registrationCentreUrl = 'https://registration.schoolexpert.in';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
+  const moreRef = useRef<HTMLDivElement>(null);
+  const moreButtonRef = useRef<HTMLButtonElement>(null);
+  const morePinned = useRef(false);
+  useEffect(() => {
+    if (!moreOpen) return;
+    const onPointer = (event: PointerEvent) => {
+      if (event.target instanceof Node && !moreRef.current?.contains(event.target)) {
+        morePinned.current = false;
+        setMoreOpen(false);
+      }
+    };
+    document.addEventListener('pointerdown', onPointer);
+    return () => document.removeEventListener('pointerdown', onPointer);
+  }, [moreOpen]);
   const [mobileMoreOpen, setMobileMoreOpen] = useState(false);
 
   const go = (href: string) => {
     setOpen(false);
     setMobileMoreOpen(false);
-    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    morePinned.current = false;
+    setMoreOpen(false);
+    goToHomeSection(href);
   };
 
   return (
@@ -52,23 +70,35 @@ export default function Navbar() {
         <Logo className="shrink-0 justify-self-start" />
 
         {/* The middle grid track keeps navigation centred in the viewport. */}
-        <div className="hidden items-center justify-self-center gap-10 md:flex">
+        <div className="hidden items-center justify-self-center gap-10 lg:flex">
           {links.map((link) => (
             <a key={link.label} href={link.href} className="text-[14px] font-semibold text-[#071f49] transition-colors duration-200 hover:text-[#0879d5]">
               {link.label}
             </a>
           ))}
-          <div className="group relative">
+          <div ref={moreRef} className="group relative py-3 -my-3"
+            onPointerEnter={event => { if (event.pointerType === 'mouse') setMoreOpen(true); }}
+            onPointerLeave={() => { if (!moreRef.current?.contains(document.activeElement)) setMoreOpen(false); }} onKeyDown={event => {
+            if (event.key === 'Escape') { morePinned.current = false; setMoreOpen(false); moreButtonRef.current?.focus(); }
+          }} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) { morePinned.current = false; setMoreOpen(false); } }}>
             <button
               type="button"
               className="flex items-center gap-1 text-[14px] font-semibold text-[#071f49] transition-colors duration-200 hover:text-[#0879d5]"
-              aria-haspopup="true"
+              ref={moreButtonRef}
+              onClick={() => {
+                // A hover-open menu should stay open on the first click.
+                morePinned.current = !morePinned.current;
+                setMoreOpen(morePinned.current);
+              }}
+              aria-expanded={moreOpen}
+              aria-controls="more-navigation"
               aria-label="More navigation options"
             >
-              More <ChevronDown size={15} className="transition-transform duration-200 group-hover:rotate-180 group-focus-within:rotate-180" />
+              More <ChevronDown size={15} className={`transition-transform duration-200 ${moreOpen ? 'rotate-180' : ''}`} />
             </button>
             <div
-              className="invisible absolute top-full mt-3 w-[290px] max-w-[calc(100vw-2rem)] translate-y-1 rounded-2xl border border-[#d8e9fb] bg-white/95 p-2 opacity-0 shadow-[0_18px_55px_rgba(24,74,130,0.16)] backdrop-blur-xl transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100"
+              id="more-navigation" hidden={!moreOpen}
+              className="more-navigation absolute top-full w-[290px] max-w-[calc(100vw-2rem)] rounded-2xl border border-[#d8e9fb] bg-white/95 p-2 shadow-[0_18px_55px_rgba(24,74,130,0.16)] backdrop-blur-xl transition-all duration-200"
               style={{ right: 'clamp(-178px, calc(642px - 50vw), -12px)' }}
             >
               {moreItems.map(({ label, icon: Icon }) => (
@@ -94,7 +124,7 @@ export default function Navbar() {
           </div>
         </div>
 
-        <div className="hidden justify-self-end md:block">
+        <div className="hidden justify-self-end lg:block">
           <a
             href={registrationCentreUrl}
             className="group inline-flex min-h-[44px] items-center justify-center gap-2.5 rounded-full border-2 border-[#0879e8] bg-white px-6 py-2 text-[14px] font-semibold text-[#082b63] shadow-[0_4px_16px_rgba(8,121,232,0.08)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#0069d9] hover:bg-[#0879e8] hover:text-white hover:shadow-[0_9px_24px_rgba(8,121,232,0.22)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200"
@@ -105,17 +135,17 @@ export default function Navbar() {
         </div>
 
         <button
-          className="col-start-3 row-start-1 grid size-10 place-self-end place-items-center rounded-lg text-[#071f49] transition-colors hover:bg-sky-50 md:hidden"
+          className="col-start-3 row-start-1 grid size-10 place-self-end place-items-center rounded-lg text-[#071f49] transition-colors hover:bg-sky-50 lg:hidden"
           onClick={() => setOpen(!open)}
           aria-label="Toggle menu"
+          aria-controls="mobile-navigation"
           aria-expanded={open}
         >
           {open ? <X /> : <Menu />}
         </button>
       </nav>
 
-      {open && (
-        <div className="border-t border-sky-100 bg-white px-5 py-4 shadow-lg md:hidden">
+      <div hidden={!open} id="mobile-navigation" onKeyDown={event => { if (event.key === 'Escape') { setOpen(false); setMobileMoreOpen(false); document.querySelector<HTMLButtonElement>('[aria-controls="mobile-navigation"]')?.focus(); } }} className="border-t border-sky-100 bg-white px-5 py-4 shadow-lg lg:hidden">
           <div className="container-page space-y-1">
             {links.map((link) => (
               <a key={link.label} href={link.href} onClick={() => setOpen(false)} className="block w-full rounded-lg px-3 py-3 text-left font-semibold text-[#071f49] transition-colors hover:bg-sky-50">
@@ -126,12 +156,12 @@ export default function Navbar() {
               type="button"
               onClick={() => setMobileMoreOpen(!mobileMoreOpen)}
               aria-expanded={mobileMoreOpen}
+              aria-controls="mobile-more-navigation"
               className="flex w-full items-center justify-between rounded-lg px-3 py-3 text-left font-semibold text-[#071f49] transition-colors hover:bg-sky-50"
             >
               More <ChevronDown size={16} className={`transition-transform duration-200 ${mobileMoreOpen ? 'rotate-180' : ''}`} />
             </button>
-            {mobileMoreOpen && (
-              <div className="ml-2 space-y-1 border-l-2 border-[#dcecff] py-1 pl-3">
+            <div id="mobile-more-navigation" hidden={!mobileMoreOpen} className="ml-2 space-y-1 border-l-2 border-[#dcecff] py-1 pl-3">
                 {moreItems.map(({ label, icon: Icon }) => (
                   <button
                     key={label}
@@ -148,7 +178,6 @@ export default function Navbar() {
                   </button>
                 ))}
               </div>
-            )}
             <a
               href={registrationCentreUrl}
               onClick={() => setOpen(false)}
@@ -158,7 +187,6 @@ export default function Navbar() {
             </a>
           </div>
         </div>
-      )}
     </header>
   );
 }

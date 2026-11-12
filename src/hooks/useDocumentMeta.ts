@@ -5,7 +5,7 @@ interface Meta {
   title?: string;
   description?: string;
   noIndex?: boolean;
-  canonicalPath?: string;
+  canonicalPath?: string | null;
 }
 
 function setMeta(attr: 'name' | 'property', key: string, content: string) {
@@ -37,14 +37,15 @@ export function useDocumentMeta({ title, description, noIndex, canonicalPath = '
   useEffect(() => {
     const fullTitle = title ? `${title} | ${site.brand}` : `${site.brand} — India's Trusted K-12 Education Ecosystem`;
     const desc = description ?? site.defaultDescription;
-    const normalizedPath = canonicalPath.startsWith('/') ? canonicalPath : `/${canonicalPath}`;
-    const url = site.url ? `${site.url}${normalizedPath}` : null;
+    const normalizedPath = canonicalPath === null ? null : canonicalPath.startsWith('/') ? canonicalPath : `/${canonicalPath}`;
+    const url = site.url && normalizedPath !== null ? `${site.url}${normalizedPath}` : null;
 
     document.title = fullTitle;
     setMeta('name', 'description', desc);
     setMeta('property', 'og:title', fullTitle);
     setMeta('property', 'og:description', desc);
     if (url) setMeta('property', 'og:url', url);
+    else document.head.querySelector('meta[property="og:url"]')?.remove();
     setMeta('name', 'robots', noIndex ? 'noindex, nofollow' : 'index, follow');
     setCanonical(url);
   }, [title, description, noIndex, canonicalPath]);

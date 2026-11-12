@@ -4,22 +4,22 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const audienceContent = {
   schools: {
-    label: 'For Schools', title: 'A brighter way to connect your school with families.',
+    label: 'For Schools',
     description: 'A dedicated space for schools to showcase strengths, share programmes and connect with teachers and parents community.',
     icon: School, accent: '#087bd5', pale: '#e8f5ff',
   },
   parents: {
-    label: 'For Parents', title: 'Your child’s next learning opportunity is on its way.',
+    label: 'For Parents',
     description: 'We’re creating a helpful space to discover schools, explore learning options and find trusted education resources for your child.',
     icon: HeartHandshake, accent: '#e58a28', pale: '#fff4e7',
   },
   teachers: {
-    label: 'For Teachers', title: 'A new space for your teaching journey is coming.',
+    label: 'For Teachers',
     description: 'We’re building a community where educators can discover opportunities, access useful resources and continue growing professionally.',
     icon: GraduationCap, accent: '#15966a', pale: '#e9f8f1',
   },
   vendors: {
-    label: 'For Vendors', title: 'Bring your education services to the right community.',
+    label: 'For Vendors',
     description: 'We’re preparing a dedicated space for education partners to introduce their services and build meaningful connections within the ecosystem.',
     icon: Handshake, accent: '#8054c8', pale: '#f2edff',
   },
@@ -31,7 +31,7 @@ export default function ComingSoon({ audience }: { audience: Audience }) {
   const data = audienceContent[audience];
   const Icon = data.icon;
   const reduceMotion = useReducedMotion();
-  useDocumentMeta({ title: `${data.label} — Coming Soon`, description: data.description, noIndex: true, canonicalPath: window.location.pathname });
+  useDocumentMeta({ title: `${data.label} — Coming Soon`, description: data.description, noIndex: true, canonicalPath: `/${audience}` });
   const floatTransition = reduceMotion ? { duration: 0 } : { duration: 5, repeat: Infinity, repeatType: 'mirror' as const, ease: 'easeInOut' as const };
 
   return (
